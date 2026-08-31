@@ -25,6 +25,20 @@
   }
   ::selection{background:var(--drep);color:#fff}
 
+  .lang-switch{
+    position:fixed;top:18px;right:18px;z-index:60;display:flex;gap:2px;padding:3px;
+    border-radius:999px;border:1px solid var(--line);
+    background:rgba(10,10,15,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  .lang-btn{
+    font:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:999px;
+    border:none;background:transparent;color:var(--muted);cursor:pointer;
+    transition:background .15s ease,color .15s ease;
+  }
+  .lang-btn:hover{color:var(--ink)}
+  .lang-btn.is-active{background:#fff;color:#000}
+  @media (max-width:640px){ .lang-switch{top:12px;right:12px} }
+
   .noise{
     position:fixed;inset:0;pointer-events:none;opacity:.035;mix-blend-mode:overlay;z-index:1;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -295,6 +309,32 @@
     background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--muted);
   }
   .pg-verdict b{color:var(--ink)}
+  .relay-cta{
+    display:flex;gap:20px;align-items:flex-start;text-decoration:none;color:var(--ink);
+    margin:22px 0 0;padding:24px 26px;border-radius:16px;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--pool) 14%, var(--bg2)), var(--bg2) 70%);
+    border:1px solid color-mix(in srgb, var(--pool) 38%, var(--line));
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .relay-cta:hover{
+    transform:translateY(-3px);
+    border-color:color-mix(in srgb, var(--pool) 70%, var(--line));
+    box-shadow:0 20px 40px -20px color-mix(in srgb, var(--pool) 70%, transparent);
+  }
+  .relay-badge{
+    flex:none;font-size:10.5px;font-weight:800;letter-spacing:.1em;
+    padding:7px 13px;border-radius:999px;white-space:nowrap;
+    background:var(--pool);color:#fff;
+  }
+  .relay-body h3{margin:0 0 10px;font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .relay-body p{margin:0 0 14px;font-size:13px;line-height:1.9;color:var(--muted)}
+  .relay-body p b{color:var(--ink)}
+  .relay-link{
+    display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--pool);
+  }
+  .relay-link::after{content:"↗";font-weight:400;transition:transform .2s ease}
+  .relay-cta:hover .relay-link::after{transform:translate(2px,-2px)}
+  @media (max-width:640px){ .relay-cta{flex-direction:column;gap:14px} }
   @media (max-width:820px){
     .pg-cards{grid-template-columns:1fr}
     .pg-result{grid-template-columns:1fr}
@@ -605,7 +645,17 @@
 </head>
 <body>
 
+<script>
+window.I18N = {"k000": {"ja": "あなた（未投票）", "en": "You (not voted)"}, "k001": {"ja": "あなた（賛成）", "en": "You (yes)"}, "k002": {"ja": "あなた（反対）", "en": "You (no)"}, "k003": {"ja": "あなた（棄権）", "en": "You (abstain)"}, "k004": {"ja": "円の大きさは投票力です。人数では反対が圧倒的でも、面積では賛成が上回っています。右の <b>02</b> であなたが投票すると、あなたの円がどちらかに移動します。", "en": "Circle size is voting power. By headcount the opposition dominates, but by area the yes side is ahead. Vote in <b>02</b> on the right and your circle moves."}, "k005": {"ja": "あなたは棄権しました。円は中央に外れ、<b>母数からも除外</b>されます。残った側の割合が相対的に上がるため、棄権は中立ではありません。", "en": "You abstained. Your circle moves to the centre and is <b>removed from the denominator</b>. The remaining side's share rises, so abstaining is not neutral."}, "k006": {"ja": "あなたの円が賛成側に移りました。<b>人数では", "en": "Your circle moved to the yes side. <b>By headcount it is "}, "k007": {"ja": "対", "en": " to "}, "k008": {"ja": "で反対が多数</b>ですが、面積で見ると賛成側のほうが大きくなっています。", "en": " against</b>, yet by area the yes side is larger."}, "k009": {"ja": "あなたの円が反対側に移りました。反対側の面積は増えましたが、賛成側の4人はそれでも", "en": "Your circle moved to the no side. The opposition grew, but the four on the yes side still hold "}, "k010": {"ja": "%を保っています。", "en": "%."}, "k011": {"ja": "賛成に投じる", "en": "Vote yes"}, "k012": {"ja": "反対に投じる", "en": "Vote no"}, "k013": {"ja": "棄権する", "en": "Abstain"}, "k014": {"ja": "</span><span class=\"p\">あなたの20%</span>", "en": "</span><span class=\"p\">your 20%</span>"}, "k015": {"ja": "賛成 ", "en": "Yes "}, "k016": {"ja": "人", "en": ""}, "k017": {"ja": "反対 ", "en": "No "}, "k018": {"ja": "可決見込み", "en": "Likely to pass"}, "k019": {"ja": "否決見込み", "en": "Likely to fail"}, "k020": {"ja": "まだ投票していません。あなたの20%をどう使うか、上から選んでください。", "en": "You have not voted yet. Choose above how to use your 20%."}, "k021": {"ja": "<b>否決。</b>止められました。ただし注意してほしいのは、<b>反対に投じても、何もしなくても、賛成率は同じ", "en": "<b>Failed.</b> You stopped it. But note this: <b>whether you vote no or do nothing at all, the yes share is the same "}, "k022": {"ja": "%</b>だということです。委任済みで投票しなかった分は、もともと反対と同じ扱いになります。", "en": "%</b>. Delegated stake that does not vote already counts the same as a no."}, "k023": {"ja": "<b>可決。</b>人数では", "en": "<b>Passed.</b> Even with "}, "k024": {"ja": "人が反対しているのに、通りました。以後この維持費は毎年トレジャリーから引かれ続けます。<b>あなた1人の20%が、76人の反対より重かった</b>ということです。", "en": " people against, it went through. From here the maintenance fee is drawn from the treasury every year. <b>Your single 20% outweighed 76 people.</b>"}, "k025": {"ja": "<b>可決。</b>あなたは棄権しただけなのに、<b>棄権した分は母数から外れる</b>ため賛成側の割合が上がり（", "en": "<b>Passed.</b> You only abstained, but <b>abstentions leave the denominator</b>, so the yes share rose ("}, "k026": {"ja": "%）、提案が通ってしまいました。<b>棄権は中立ではありません。</b>", "en": "%) and the proposal carried. <b>Abstaining is not neutral.</b>"}, "k027": {"ja": "小口DRep 40人", "en": "40 small DReps"}, "k028": {"ja": "1人あたり 約0.3%", "en": "~0.3% each"}, "k029": {"ja": "% 合計", "en": "% total"}, "k030": {"ja": "40人を1人ずつ説得して、ようやく合計12%。<b>時間も労力も40倍かかります。</b>それでも可決ラインには届きません。", "en": "Persuading 40 people one by one gets you 12%. <b>Forty times the time and effort</b>, and still short of the threshold."}, "k031": {"ja": "中堅DRep 5人", "en": "5 mid-sized DReps"}, "k032": {"ja": "1人あたり 約4%", "en": "~4% each"}, "k033": {"ja": "5人への営業で20%。効率は上がりましたが、まだ足りません。<b>それでも、もう1〜2人には会いに行く価値がある</b>という判断になります。", "en": "Five conversations gets you 20%. Better, but not enough. <b>Still worth meeting one or two more</b>, you conclude."}, "k034": {"ja": "上位DRep 2人", "en": "2 top DReps"}, "k035": {"ja": "1人あたり 約19%", "en": "~19% each"}, "k036": {"ja": "<b>たった2人に会うだけで38%。</b>可決ラインに一気に近づきます。時間が限られているなら、誰もがここに行きます。", "en": "<b>Just two meetings gets you 38%.</b> Suddenly the threshold is within reach. With limited time, everyone goes here."}, "k037": {"ja": "つまり、この構造では<b>「大口DRepに営業をかける」ことが最も合理的</b>になります。そして大口DRepの側から見れば、自分がNOを出したとき、それを覆そうとする働きかけが集中することを意味します。上位であるほど、そうしたやり取りに晒され続けます。", "en": "So in this structure, <b>pitching the large DReps is simply the rational move</b>. And seen from their side, it means that whenever they vote no, the pressure to reverse it concentrates on them. The higher up you are, the more of that you face."}, "k038": {"ja": "プール A", "en": "Pool A"}, "k039": {"ja": "独立（1プールのみ）", "en": "Independent (single pool)"}, "k040": {"ja": "<b>もっとも分散に寄与する選択です。</b>飽和度に余裕があり、運営者も独立しています。停止しても影響はネットワーク全体の1.2%にとどまります。ただし小規模なぶん、報酬の安定性は運営体制次第です。", "en": "<b>The choice that helps decentralisation most.</b> Room in its saturation, and an independent operator. If it halts, the impact is 1.2% of the network. Being small, though, reward consistency depends on how well it is run."}, "k041": {"ja": "プール B", "en": "Pool B"}, "k042": {"ja": "運営者は独立していますが、<b>飽和度が92%とほぼ上限</b>です。ここに委任を足しても、超過分は報酬に反映されにくくなります。分散の観点では、まだ余裕のあるプールのほうが効果的です。", "en": "The operator is independent, but <b>saturation is at 92%, nearly capped</b>. Adding delegation here yields little extra reward. For decentralisation, a pool with room left is more effective."}, "k043": {"ja": "プール C", "en": "Pool C"}, "k044": {"ja": "他28プールと同一運営者", "en": "Same operator as 28 others"}, "k045": {"ja": "表向きの数字（飽和度55%・シェア4.5%）だけ見ると健全ですが、<b>実際には他28プールと同じ運営者・同じ基盤</b>です。この運営者が停止すると、ネットワーク全体の22%のブロック生成が同時に止まります。名前が別々でも、分散したことにはなりません。", "en": "On paper (55% saturation, 4.5% share) it looks healthy, but <b>it shares an operator and infrastructure with 28 other pools</b>. If that operator halts, 22% of network block production stops at once. Different names do not make it decentralised."}, "k046": {"ja": "<dt>ネットワークシェア</dt><dd>", "en": "<dt>Network share</dt><dd>"}, "k047": {"ja": "<dt>飽和度</dt><dd>", "en": "<dt>Saturation</dt><dd>"}, "k048": {"ja": "<dt>運営体制</dt><dd>", "en": "<dt>Operator</dt><dd>"}, "k049": {"ja": "上限が近く、これ以上の委任は報酬に反映されにくくなります。", "en": "Near the cap, so further delegation yields little extra reward."}, "k050": {"ja": "まだ余裕があります。", "en": "Still has room."}, "k051": {"ja": "ネットワーク全体の <b>", "en": "<b>"}, "k052": {"ja": "%</b> のブロック生成が止まります。", "en": "%</b> of network block production stops."}, "k053": {"ja": "個 — それぞれ別名のプールに見えますが、同じ運営者・同じ基盤です。", "en": " pools, each separately named, but sharing one operator and one infrastructure."}, "k054": {"ja": "ステーキングPOOLへの委任", "en": "Stake pool delegation"}, "k055": {"ja": "報酬を受け取りながら、ブロックを作る顔ぶれの分布に関わります。委任先はステークプール（SPO）です。これは「チェーンを安全に動かし続けるか」の話で、DRep委任とは担当が分かれています。ADAはウォレットから動かず、いつでも委任先を変更できます。", "en": "You earn rewards while shaping who produces blocks. You delegate to a stake pool operator (SPO). This is about keeping the chain running safely, a separate job from DRep delegation. Your ADA never leaves your wallet, and you can change delegation at any time."}, "k056": {"ja": "効き方は3つあります", "en": "It affects three things"}, "k057": {"ja": "ステーキング報酬が発生する", "en": "You earn staking rewards"}, "k058": {"ja": "そのプールがブロックを作る割当が増え、チェーンの分散のしかたが変わる", "en": "That pool's share of block production grows, changing how the chain is distributed"}, "k059": {"ja": "そのプール運営者（SPO）の投票力になる", "en": "It becomes voting power for that operator (SPO)"}, "k060": {"ja": "3つ目のSPOの投票が扱えるのは一部の提案（ハードフォーク・憲法委員会の変更・信任否決・セキュリティ関連パラメータ）に限られ、<b>予算の使い道には投票できません</b>。", "en": "That third one covers only some proposals (hard forks, committee changes, no-confidence, security parameters). <b>It cannot vote on how the budget is spent.</b>"}, "k061": {"ja": "飽和度という歯止め", "en": "Saturation as a brake"}, "k062": {"ja": "1つのプールに委任が集まりすぎると、それ以上は報酬に反映されなくなります。これが飽和度です。頭打ちになれば別のプールへ移る理由が生まれるため、<b>報酬と分散は意図的に結びつけられています</b>。<br><br>ただしこの上限は報酬の話に限られます。ガバナンスの投票力には、これに当たる歯止めがありません。同じ「集まりすぎ」でも効き方が違います。", "en": "Once too much delegation gathers in one pool, additional stake stops adding rewards. That is saturation. Because the cap creates a reason to move elsewhere, <b>rewards and decentralisation are deliberately tied together</b>.<br><br>But that cap applies only to rewards. Governance voting power has no equivalent brake. The same over-concentration plays out very differently."}, "k063": {"ja": "チェーンの安全性への効き方", "en": "How it affects chain security"}, "k064": {"ja": "ブロックを作る担当は、プールに委任されたステーク量に比例します。どこに委任するかで、ブロックを作る顔ぶれの分布そのものが変わります。", "en": "Who produces blocks is proportional to delegated stake. Where you delegate changes the distribution of block producers itself."}, "k065": {"ja": "少数の運営者にステークが集まるほど、実際にブロックを作っている主体の数は減る", "en": "The more stake gathers with few operators, the fewer entities actually produce blocks"}, "k066": {"ja": "同じ運営者が複数のプールを持つ場合、プールの数ほどには分散していない", "en": "When one operator runs several pools, it is less distributed than the pool count suggests"}, "k067": {"ja": "障害や停止が起きたときの影響範囲も、そのステーク量に比例する", "en": "The blast radius of an outage is proportional to that stake too"}, "k068": {"ja": "SPOが投票できる提案", "en": "What SPOs can vote on"}, "k069": {"ja": "SPOは、ネットワークの土台に関わる提案にだけ投票します。投票の重みは、そのプールに委任されたADA量に比例します。", "en": "SPOs vote only on proposals touching the network's foundations. Vote weight is proportional to ADA delegated to the pool."}, "k070": {"ja": "信任否決（憲法委員会への不信任）", "en": "Motion of no confidence in the constitutional committee"}, "k071": {"ja": "憲法委員会の変更", "en": "Changing the constitutional committee"}, "k072": {"ja": "ハードフォークの実施", "en": "Initiating a hard fork"}, "k073": {"ja": "セキュリティ関連のプロトコルパラメータの変更", "en": "Security-relevant protocol parameter changes"}, "k074": {"ja": "トレジャリー（予算）の引き出しは、この中に入っていません。プールをどこに委任していても、予算の結果には反映されません。", "en": "Treasury withdrawals are not on this list. Wherever you delegate your pool stake, it does not reach budget decisions."}, "k075": {"ja": "名前は別々、運営者は同じ", "en": "Different names, same operator"}, "k076": {"ja": "取引所やカストディサービスは、多くの利用者のADAをまとめて預かっています。その運営者が自社のプールにまとめて委任すると、多数の利用者の資産が実質的に1つの運営体制に集中します。", "en": "Exchanges and custodial services hold many users' ADA together. When that operator delegates it all to its own pools, a large number of users' assets effectively concentrate under a single operation."}, "k077": {"ja": "利用者一人ひとりは委任先を選んだつもりがなくても、預けた先の判断で委任がまとまる", "en": "Individual users may never choose a delegate, yet the custodian's decision bundles it"}, "k078": {"ja": "同じ運営者が複数のプールを立てていても、システムや鍵の管理が共通なら障害はプールをまたいで同時に起こる", "en": "Even across several pools, shared systems or key management mean an outage hits them all at once"}, "k079": {"ja": "その運営体制が停止すると、積み上がった量に比例してブロック生成に影響が及ぶ", "en": "If that operation halts, block production is affected in proportion to the stake accumulated"}, "k080": {"ja": "特定の事業者名は挙げません。取引所やカストディという業態そのものが、利用者の資産を一箇所にまとめやすい構造を持っている、という話です。", "en": "No specific company is named here. The point is that the exchange and custody business model itself tends to pool users' assets in one place."}, "k081": {"ja": "プールを選ぶときの観点", "en": "What to look for in a pool"}, "k082": {"ja": "報酬の面と、投票力を預ける面の両方があります。どちらを重視するかで答えが変わることもあります。", "en": "There is the reward side and the voting-power side. Which you weight more can change the answer."}, "k083": {"ja": "ブロックを安定して作れているか", "en": "Is it producing blocks reliably?"}, "k084": {"ja": "飽和度に余裕があるか", "en": "Does it have room in its saturation?"}, "k085": {"ja": "運営体制の情報が公開されているか", "en": "Is information about the operation published?"}, "k086": {"ja": "同じ運営者が多数のプールを持っている場合、その運営者に何かあったときの影響範囲", "en": "If one operator runs many pools, how wide is the blast radius?"}, "k087": {"ja": "DRepへの委任", "en": "DRep delegation"}, "k088": {"ja": "提案に賛成か反対かを任せます。委任先はDRep。ADAは動かず、ステーキング報酬にも影響しません。これは「何を可決するか」の話で、プール委任とは担当が分かれています。<br><br>DRepは提案を実行する人ではなく、賛成・反対を出す人です。委任するという行為は、実行者を選ぶことではなく、賛否の判断を任せることになります。", "en": "You hand over the yes-or-no call on proposals. Your ADA does not move and staking rewards are unaffected. This is about what gets passed, a separate job from pool delegation.<br><br>A DRep does not execute proposals; they cast yes or no. Delegating means entrusting judgement, not choosing an implementer."}, "k089": {"ja": "投票できる提案の種類", "en": "Types of proposals they vote on"}, "k090": {"ja": "DRepは、すべての種類の提案に投票できる唯一の枠です。投票の重みは、委任されたADA量に比例します。", "en": "DReps are the only body that can vote on every type of proposal. Vote weight is proportional to delegated ADA."}, "k091": {"ja": "トレジャリーからの引き出し（予算の支出）", "en": "Treasury withdrawals (budget spending)"}, "k092": {"ja": "プロトコルパラメータの変更", "en": "Protocol parameter changes"}, "k093": {"ja": "憲法の更新", "en": "Constitution updates"}, "k094": {"ja": "SPOと共同で投票する4種類（不信任・委員会変更・ハードフォーク・セキュリティ関連）", "en": "The four shared with SPOs (no confidence, committee changes, hard forks, security)"}, "k095": {"ja": "ただしDRepだけで可決できる提案はありません。どの種類も、必ず他の主体との組み合わせで決まります。", "en": "But no proposal passes on DReps alone. Every type requires a combination with another body."}, "k096": {"ja": "投票する3つの主体", "en": "The three voting bodies"}, "k097": {"ja": "提案の種類によって投票する顔ぶれが変わります。どの提案も3つのうち2つ以上の賛成が必要で、1つの主体だけで通ることはありません。", "en": "Who votes depends on the proposal type. Every proposal needs at least two of the three; none passes on one body alone."}, "k098": {"ja": "DRep — ADA保有者から投票を委任された代表。すべての種類に投票する", "en": "DRep &mdash; representatives delegated by ADA holders. Vote on every type"}, "k099": {"ja": "SPO — プール運営者。土台に関わる4種類に投票する", "en": "SPO &mdash; pool operators. Vote on the four foundational types"}, "k100": {"ja": "憲法委員会（CC） — 提案が憲法に反していないかを見る。委員は1人1票", "en": "Constitutional Committee (CC) &mdash; checks proposals against the constitution. One vote per member"}, "k101": {"ja": "委員会は「良い提案か」「金額が妥当か」は判断しない。中身の良し悪しはDRepとSPOに委ねられている", "en": "The committee does not judge whether a proposal is good or the amount reasonable; that is left to DReps and SPOs"}, "k102": {"ja": "予算はどう決まるのか", "en": "How the budget is decided"}, "k103": {"ja": "Cardanoのトレジャリーからお金を出すには、トレジャリー引き出しの提案が可決される必要があります。これに投票するのは<b>DRepと憲法委員会</b>です。SPOの票は入りません。", "en": "Spending from the Cardano treasury requires a treasury withdrawal proposal to pass. <b>DReps and the constitutional committee</b> vote on it. SPO votes do not count here."}, "k104": {"ja": "逆に言えば、予算に関わりたい場合に選ぶべきなのは委任先のDRepであって、プールではありません。", "en": "Put the other way: if you care about the budget, the choice that matters is your DRep, not your pool."}, "k105": {"ja": "投票しなかった票の扱い", "en": "How non-votes are counted"}, "k106": {"ja": "「投票しない」にも複数の状態があり、結果への効き方が違います。", "en": "There are several ways to not vote, and each affects the outcome differently."}, "k107": {"ja": "どこにも投票委任していないステーク — 棄権と同じ扱い", "en": "Stake with no vote delegation &mdash; treated as abstain"}, "k108": {"ja": "委任済みで、その委任先が投票しなかった場合 — <b>反対と同じ扱い</b>", "en": "Delegated, but the DRep did not vote &mdash; <b>treated the same as no</b>"}, "k109": {"ja": "明示的な棄権 — 集計の母数（アクティブな投票ステーク）から外れる", "en": "An explicit abstain &mdash; removed from the denominator (active voting stake)"}, "k110": {"ja": "一定期間活動のないDRepは非アクティブとみなされ、投票力が集計から外れる（目安18エポック≒3ヶ月）", "en": "A DRep inactive for a set period is marked inactive and their power drops out (about 18 epochs, ~3 months)"}, "k111": {"ja": "委任したまま放置することと、どこにも委任しないことは、結果に対して別の意味を持ちます。参加しないことは中立ではありません。", "en": "Leaving delegation idle and never delegating at all mean different things for the result. Not participating is not neutral."}, "k112": {"ja": "委任が集中するとどうなるか", "en": "What happens when delegation concentrates"}, "k113": {"ja": "投票力は委任された量にそのまま比例し、この量には上限がありません。報酬には飽和度という頭打ちがありますが、投票力にはそれに当たるものがありません。", "en": "Voting power is directly proportional to delegated stake, and there is no cap on that amount. Rewards have saturation; voting power has no equivalent."}, "k114": {"ja": "委任が集まるほど、その委任先の判断が結果に直結する", "en": "The more that gathers, the more directly that delegate's judgement decides outcomes"}, "k115": {"ja": "上位に偏るほど、少ない人数の賛否で結果が決まる", "en": "The more it skews to the top, the fewer people decide"}, "k116": {"ja": "同時に、その少数が投票しなければ結果が動かなくなる", "en": "At the same time, if that few does not vote, nothing moves"}, "k117": {"ja": "集中は「通りやすくなる」方向だけでなく、「何も通らなくなる」方向にも働きます。大きな委任先が動かないとき、小さな委任先が集まっても届かない状況が起こりえます。", "en": "Concentration cuts both ways: it can make things pass more easily, and it can make nothing pass at all. When large delegates stay still, small ones banding together may never reach the line."}, "k118": {"ja": "意識せずに委任されている場合", "en": "When you delegate without realising"}, "k119": {"ja": "ウォレットやサービスによっては、既定の委任先が設定されていたり、案内に沿って進むと特定の先に委任される作りになっています。この場合、利用者が選んだというより、そのサービスを使った結果として委任が集まります。", "en": "Some wallets and services ship with a default delegate, or funnel you to a particular one if you follow the prompts. Delegation then accumulates as a by-product of using the service rather than as a user's choice."}, "k120": {"ja": "自分の委任先がどこかは、ウォレットやガバナンスツールで確認できる", "en": "You can check where your delegation sits in your wallet or a governance tool"}, "k121": {"ja": "委任先はいつでも変更でき、変更しても報酬には影響しない", "en": "You can change delegate at any time, with no effect on rewards"}, "k122": {"ja": "自分自身をDRepとして登録し、直接投票することもできる（デポジットが必要）", "en": "You can register as a DRep yourself and vote directly (a deposit is required)"}, "k123": {"ja": "サービス側が設定した委任先の善し悪しではなく、自分の票がどこに入っているかを把握しているかどうか、という話です。", "en": "This is not about whether the service's default is good or bad; it is about whether you know where your vote is going."}, "k124": {"ja": "提案を判断する難しさ", "en": "Why judging proposals is hard"}, "k125": {"ja": "賛成か反対かを決めるのは、思っているより簡単ではありません。", "en": "Deciding yes or no is harder than it looks."}, "k126": {"ja": "金額の妥当性が測りにくい — 同じ内容でも適正額の基準がない", "en": "Amounts are hard to assess &mdash; there is no benchmark for what is reasonable"}, "k127": {"ja": "専門性が要る — 技術・法務・会計にまたがる提案がある", "en": "Expertise is needed &mdash; proposals span engineering, legal and accounting"}, "k128": {"ja": "量がある — すべてを読み込む時間を全員が確保できるとは限らない", "en": "There is volume &mdash; not everyone can find time to read everything"}, "k129": {"ja": "成果の確認が後になる — 可決した時点では実行結果がわからない", "en": "Results come later &mdash; at the moment of passing, the outcome is unknown"}, "k130": {"ja": "この難しさがあるからこそ投票を委任する仕組みがあり、同時に、委任先を選ぶこと自体にも同じ難しさが移ります。", "en": "That difficulty is exactly why delegation exists, and the same difficulty then transfers to choosing whom to delegate to."}, "k131": {"ja": "DRepを選ぶときの観点", "en": "What to look for in a DRep"}, "k132": {"ja": "DRepの投票は記録として残ります。人柄や知識だけでなく、その判断が実際にどう機能したかを見る必要があります。", "en": "DRep votes are on the record. Beyond character and knowledge, you need to see how their judgement actually played out."}, "k133": {"ja": "どの提案にどう投票したかを確認できるか", "en": "Can you see how they voted on each proposal?"}, "k134": {"ja": "賛否の理由を公開しているか", "en": "Do they publish their reasoning?"}, "k135": {"ja": "継続して投票しているか（非アクティブになっていないか）", "en": "Do they vote consistently (not gone inactive)?"}, "k136": {"ja": "以前に表明していた方針と、実際の投票が一致しているか", "en": "Do their actual votes match the stance they stated earlier?"}, "k137": {"ja": "Catalystから資金提供を受けた経歴があるか — トレジャリー関連で利害が生じうる", "en": "Have they received Catalyst funding &mdash; a possible interest in treasury matters?"}, "k138": {"ja": "トレジャリー予算を使うプロジェクトの当事者自身がDRepを兼ねていないか", "en": "Is someone running a treasury-funded project also serving as the DRep?"}, "k139": {"ja": "委任先はいつでも変更できます。一度決めたら固定されるものではありません。", "en": "You can change delegate at any time. Nothing is locked in once chosen."}};
+window.LANG = (localStorage.getItem('lang') || 'ja');
+function T(k){ var e = window.I18N[k]; return e ? (e[window.LANG] || e.ja) : k; }
+</script>
 <div class="noise"></div>
+<div class="lang-switch">
+  <button type="button" class="lang-btn is-active" data-lang="ja">日本語</button>
+  <button type="button" class="lang-btn" data-lang="en">EN</button>
+</div>
+
 
 <section class="hero" id="top">
   <div class="hero-glow"></div>
@@ -613,11 +663,11 @@
   <div class="hero-rays" id="heroRays"></div>
   <div class="hero-orbs" id="heroOrbs"></div>
   <div class="hero-eyebrow">CARDANO GOVERNANCE</div>
-  <h1><span class="l1">1つのウォレット</span><span class="l1b">holderがかかわる</span><span class="l2 accent">2種類の委任</span></h1>
-  <p>ホルダーが混同しやすい2種類の委任を、実際に動かして体感するガイド。仕組みから、あるいはシミュレーションから。</p>
+  <h1><span class="l1" data-ja="1つのウォレット" data-en="One Wallet">1つのウォレット</span><span class="l1b" data-ja="holderがかかわる" data-en="Two delegations">holderがかかわる</span><span class="l2 accent" data-ja="2種類の委任" data-en="Two Kinds of Power">2種類の委任</span></h1>
+  <p data-ja="ホルダーが混同しやすい2種類の委任を、実際に動かして体感するガイド。仕組みから、あるいはシミュレーションから。" data-en="An interactive guide to the two delegations ADA holders most often confuse. Start from the mechanics, or from the simulation.">ホルダーが混同しやすい2種類の委任を、実際に動かして体感するガイド。仕組みから、あるいはシミュレーションから。</p>
   <div class="hero-cta">
-    <a class="btn btn-primary" href="#show1">シミュレーションを始める</a>
-    <a class="btn btn-ghost" href="#compare">まず違いを知る</a>
+    <a class="btn btn-primary" href="#show1" data-ja="シミュレーションを始める" data-en="Start the simulation">シミュレーションを始める</a>
+    <a class="btn btn-ghost" href="#compare" data-ja="まず違いを知る" data-en="See the difference first">まず違いを知る</a>
   </div>
   <div class="scrollcue">
     <span>SCROLL</span>
@@ -629,27 +679,27 @@
   <div class="ghost-word" data-word="POOL × DREP">POOL × DREP</div>
   <div class="wrap">
     <div class="games-head reveal">
-      <h2>同じ「委任」でも、まったく別のものです。</h2>
-      <p>名前が似ているだけで、預ける先も、効くものも、リスクの種類も違います。</p>
+      <h2 data-ja="同じ「委任」でも、まったく別のものです。" data-en="Same word. Entirely different things.">同じ「委任」でも、まったく別のものです。</h2>
+      <p data-ja="名前が似ているだけで、預ける先も、効くものも、リスクの種類も違います。" data-en="Only the name is similar. Where it goes, what it affects, and the kind of risk it carries are all different.">名前が似ているだけで、預ける先も、効くものも、リスクの種類も違います。</p>
     </div>
     <div class="cmp reveal">
       <table class="cmp-table">
         <thead>
           <tr>
             <th></th>
-            <th class="c-pool"><span class="cmp-tag pool">POOL</span>ステーキングPOOL委任</th>
-            <th class="c-drep"><span class="cmp-tag drep">DREP</span>DRep委任</th>
+            <th class="c-pool"><span class="cmp-tag pool">POOL</span><span data-ja="ステーキングPOOL委任" data-en="Stake Pool Delegation">ステーキングPOOL委任</span></th>
+            <th class="c-drep"><span class="cmp-tag drep">DREP</span><span data-ja="DRep委任" data-en="DRep Delegation">DRep委任</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr><th>何に効くか</th><td>チェーンそのものの安全性</td><td>チェーンの未来を決める予算</td></tr>
-          <tr><th>預ける先</th><td>ステークプール運営者（SPO）</td><td>DRep（代理投票者）</td></tr>
-          <tr><th>決めること</th><td>誰がブロックを作るか</td><td>どの提案を可決するか</td></tr>
-          <tr><th>報酬</th><td>ステーキング報酬が発生する</td><td>報酬には影響しない</td></tr>
-          <tr><th>集中への歯止め</th><td><b class="ok">飽和度がある</b>（集まりすぎると報酬が頭打ち）</td><td><b class="warn">ない</b>（集まった分だけ影響力が増える）</td></tr>
-          <tr><th>投票できる提案</th><td>ハードフォーク・憲法委員会など4種類のみ<br><span class="sub">予算の使い道には投票できない</span></td><td>すべての種類<br><span class="sub">トレジャリー引き出しを含む</span></td></tr>
-          <tr><th>集中したときのリスク</th><td>運営者が停止すると、その分のブロック生成が止まる</td><td>少数の判断だけで提案の可否が決まる</td></tr>
-          <tr><th>実態は測れるか</th><td><b class="ok">技術的事実で測れる</b><br><span class="sub">稼働・独立性・相乗りの有無</span></td><td><b class="warn">測りにくい</b><br><span class="sub">投票内容の評価は立場によって変わる</span></td></tr>
+          <tr><th data-ja="何に効くか" data-en="What it affects">何に効くか</th><td data-ja="チェーンそのものの安全性" data-en="The security of the chain itself">チェーンそのものの安全性</td><td data-ja="チェーンの未来を決める予算" data-en="The budget that shapes the chain&#39;s future">チェーンの未来を決める予算</td></tr>
+          <tr><th data-ja="預ける先" data-en="Who you delegate to">預ける先</th><td data-ja="ステークプール運営者（SPO）" data-en="Stake pool operators (SPOs)">ステークプール運営者（SPO）</td><td data-ja="DRep（代理投票者）" data-en="DReps (delegated representatives)">DRep（代理投票者）</td></tr>
+          <tr><th data-ja="決めること" data-en="What it decides">決めること</th><td data-ja="誰がブロックを作るか" data-en="Who produces blocks">誰がブロックを作るか</td><td data-ja="どの提案を可決するか" data-en="Which proposals pass">どの提案を可決するか</td></tr>
+          <tr><th data-ja="報酬" data-en="Rewards">報酬</th><td data-ja="ステーキング報酬が発生する" data-en="Earns staking rewards">ステーキング報酬が発生する</td><td data-ja="報酬には影響しない" data-en="No effect on rewards">報酬には影響しない</td></tr>
+          <tr><th data-ja="集中への歯止め" data-en="Brake on concentration">集中への歯止め</th><td data-ja="&lt;b class=&quot;ok&quot;&gt;飽和度がある&lt;/b&gt;（集まりすぎると報酬が頭打ち）" data-en="&lt;b class=&quot;ok&quot;&gt;Saturation exists&lt;/b&gt; (rewards cap out once too much gathers)"><b class="ok">飽和度がある</b>（集まりすぎると報酬が頭打ち）</td><td data-ja="&lt;b class=&quot;warn&quot;&gt;ない&lt;/b&gt;（集まった分だけ影響力が増える）" data-en="&lt;b class=&quot;warn&quot;&gt;None&lt;/b&gt; (influence grows with every ADA added)"><b class="warn">ない</b>（集まった分だけ影響力が増える）</td></tr>
+          <tr><th data-ja="投票できる提案" data-en="Proposals it can vote on">投票できる提案</th><td data-ja="ハードフォーク・憲法委員会など4種類のみ&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;予算の使い道には投票できない&lt;/span&gt;" data-en="Only 4 types: hard forks, committee changes, and so on&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;Cannot vote on how the budget is spent&lt;/span&gt;">ハードフォーク・憲法委員会など4種類のみ<br><span class="sub">予算の使い道には投票できない</span></td><td data-ja="すべての種類&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;トレジャリー引き出しを含む&lt;/span&gt;" data-en="Every type&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;Including treasury withdrawals&lt;/span&gt;">すべての種類<br><span class="sub">トレジャリー引き出しを含む</span></td></tr>
+          <tr><th data-ja="集中したときのリスク" data-en="Risk when it concentrates">集中したときのリスク</th><td data-ja="運営者が停止すると、その分のブロック生成が止まる" data-en="If the operator halts, that share of block production stops">運営者が停止すると、その分のブロック生成が止まる</td><td data-ja="少数の判断だけで提案の可否が決まる" data-en="A handful of decisions determine whether proposals pass">少数の判断だけで提案の可否が決まる</td></tr>
+          <tr><th data-ja="実態は測れるか" data-en="Can it be measured?">実態は測れるか</th><td data-ja="&lt;b class=&quot;ok&quot;&gt;技術的事実で測れる&lt;/b&gt;&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;稼働・独立性・相乗りの有無&lt;/span&gt;" data-en="&lt;b class=&quot;ok&quot;&gt;Yes, by technical fact&lt;/b&gt;&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;Uptime, independence, shared infrastructure&lt;/span&gt;"><b class="ok">技術的事実で測れる</b><br><span class="sub">稼働・独立性・相乗りの有無</span></td><td data-ja="&lt;b class=&quot;warn&quot;&gt;測りにくい&lt;/b&gt;&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;投票内容の評価は立場によって変わる&lt;/span&gt;" data-en="&lt;b class=&quot;warn&quot;&gt;Hard to measure&lt;/b&gt;&lt;br&gt;&lt;span class=&quot;sub&quot;&gt;Judging votes depends on where you stand&lt;/span&gt;"><b class="warn">測りにくい</b><br><span class="sub">投票内容の評価は立場によって変わる</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -660,18 +710,18 @@
   <div class="ghost-word drep" data-word="DREP 委任">DREP 委任</div>
   <div class="wrap">
     <div class="games-head reveal">
-      <div class="showcase-tag tag-drep"><i></i>シミュレーション</div>
-      <h2>たった10人で、半分を握る。</h2>
-      <p class="sim-note"><b>これはあくまでシミュレーションです。</b>母数を100人に単純化し、人数やパーセンテージは分かりやすさを優先して調整しています。実在のDRepや実際の提案を再現したものではありません。<br>ただし「上位のごく少数が大きな割合を占める」という力の偏り方だけは、実際のCardanoのDRep分布を参考にしています（既定の棄権・不信任枠を除いた本物のDRepでは、上位10人だけで委任の約50%。2026年・GovTool/AdaStat調べ）。</p>
-      <p>残り90人がどう束になっても、この10人の判断ひとつで届く力に匹敵します。人数ではなく、量が結果を決めます。下の2つを実際に動かしてみてください。</p>
+      <div class="showcase-tag tag-drep"><i></i><span data-ja="シミュレーション" data-en="Simulation">シミュレーション</span></div>
+      <h2 data-ja="たった10人で、半分を握る。" data-en="Ten people hold half of it.">たった10人で、半分を握る。</h2>
+      <p class="sim-note" data-ja="&lt;b&gt;これはあくまでシミュレーションです。&lt;/b&gt;母数を100人に単純化し、人数やパーセンテージは分かりやすさを優先して調整しています。実在のDRepや実際の提案を再現したものではありません。&lt;br&gt;ただし「上位のごく少数が大きな割合を占める」という力の偏り方だけは、実際のCardanoのDRep分布を参考にしています（既定の棄権・不信任枠を除いた本物のDRepでは、上位10人だけで委任の約50%。2026年・GovTool/AdaStat調べ）。" data-en="&lt;b&gt;This is a simulation.&lt;/b&gt; The pool is simplified to 100 people, and headcounts and percentages are adjusted for clarity. It does not reproduce any real DRep or actual proposal.&lt;br&gt;Only the shape of the imbalance &amp;#8212; that a small number at the top hold a large share &amp;#8212; is drawn from the real Cardano DRep distribution (excluding the default abstain and no-confidence buckets, the top 10 real DReps hold roughly 50% of delegation; GovTool/AdaStat, 2026)."><b>これはあくまでシミュレーションです。</b>母数を100人に単純化し、人数やパーセンテージは分かりやすさを優先して調整しています。実在のDRepや実際の提案を再現したものではありません。<br>ただし「上位のごく少数が大きな割合を占める」という力の偏り方だけは、実際のCardanoのDRep分布を参考にしています（既定の棄権・不信任枠を除いた本物のDRepでは、上位10人だけで委任の約50%。2026年・GovTool/AdaStat調べ）。</p>
+      <p data-ja="残り90人がどう束になっても、この10人の判断ひとつで届く力に匹敵します。人数ではなく、量が結果を決めます。下の2つを実際に動かしてみてください。" data-en="No matter how the other 90 band together, a single decision from these ten carries comparable weight. Not headcount &#8212; volume decides. Try the two below.">残り90人がどう束になっても、この10人の判断ひとつで届く力に匹敵します。人数ではなく、量が結果を決めます。下の2つを実際に動かしてみてください。</p>
     </div>
     <div class="games-grid">
     <div class="reveal">
-      <div class="game-label"><span class="n">01</span>いま、誰がどちらに立っているか</div>
+      <div class="game-label"><span class="n">01</span><span data-ja="いま、誰がどちらに立っているか" data-en="Where everyone stands right now">いま、誰がどちらに立っているか</span></div>
       <div class="visual-card">
         <svg viewBox="0 0 400 230" role="img" aria-label="賛成側と反対側に分かれたDRepの勢力図。あなたの円が投票に応じて移動する">
-          <text x="100" y="14" text-anchor="middle" font-size="10" fill="var(--drep)" font-family="var(--sans)" font-weight="700">賛成</text>
-          <text x="300" y="14" text-anchor="middle" font-size="10" fill="var(--warn)" font-family="var(--sans)" font-weight="700">反対</text>
+          <text x="100" y="14" text-anchor="middle" font-size="10" fill="var(--drep)" font-family="var(--sans)" font-weight="700" data-ja="賛成" data-en="YES">賛成</text>
+          <text x="300" y="14" text-anchor="middle" font-size="10" fill="var(--warn)" font-family="var(--sans)" font-weight="700" data-ja="反対" data-en="NO">反対</text>
           <line x1="200" y1="22" x2="200" y2="228" stroke="var(--line)" stroke-width="1" stroke-dasharray="3,4"/>
           <g id="mapYes"></g>
           <g id="mapNo"></g>
@@ -681,35 +731,35 @@
         </svg>
         <div class="dual-bar">
           <div class="dual-row">
-            <div class="dual-label">人数</div>
+            <div class="dual-label" data-ja="人数" data-en="By headcount">人数</div>
             <div class="barline"><div class="barfill-yes-n" id="vgHeadYes"></div><div class="barfill-no-n" id="vgHeadNo"></div></div>
             <div class="dual-val"><span class="y" id="vgHeadYesT">賛成 4人</span><span class="n" id="vgHeadNoT">反対 76人</span></div>
           </div>
           <div class="dual-row">
-            <div class="dual-label">投票力（結果を決めるのはこちら）</div>
+            <div class="dual-label" data-ja="投票力（結果を決めるのはこちら）" data-en="By voting power (this is what decides)">投票力（結果を決めるのはこちら）</div>
             <div class="barline"><div class="barfill" id="vpBar"></div><div class="barfill-no" id="vpBarNo"></div><div class="barmark"></div></div>
             <div class="dual-val"><span class="y" id="vgPowYesT">賛成 58%</span><span class="n" id="vgPowNoT">反対 22%</span></div>
           </div>
         </div>
-        <p class="map-note" id="mapNote">円の大きさは投票力です。人数では反対が圧倒的でも、面積では賛成が上回っています。右の <b>02</b> で投票すると、あなたの円が移動します。</p>
+        <p class="map-note" id="mapNote" data-ja="円の大きさは投票力です。人数では反対が圧倒的でも、面積では賛成が上回っています。右の &lt;b&gt;02&lt;/b&gt; で投票すると、あなたの円が移動します。" data-en="Circle size is voting power. By headcount the opposition dominates, but by area the yes side is ahead. Vote in &lt;b&gt;02&lt;/b&gt; on the right and your circle moves.">円の大きさは投票力です。人数では反対が圧倒的でも、面積では賛成が上回っています。右の <b>02</b> で投票すると、あなたの円が移動します。</p>
       </div>
     </div>
 
     <div class="reveal">
-      <div class="game-label"><span class="n">02</span>あなたなら、どう動きますか</div>
+      <div class="game-label"><span class="n">02</span><span data-ja="あなたなら、どう動きますか" data-en="What would you do?">あなたなら、どう動きますか</span></div>
       <div class="visual-card barcard">
-        <p class="game-lead"><b>提案：</b>あるインフラ整備に予算を出す。ただし初期費用だけでなく、<b>運用維持費として毎年トレジャリーから継続的に請求され続ける</b>構造になっている。</p>
-        <p class="game-lead you-lead"><b>あなたは20%を持つDRepです。</b>まだ投票していません。賛成にも反対にも傾けることができます。これが投票力です。</p>
+        <p class="game-lead" data-ja="&lt;b&gt;提案：&lt;/b&gt;あるインフラ整備に予算を出す。ただし初期費用だけでなく、&lt;b&gt;運用維持費として毎年トレジャリーから継続的に請求され続ける&lt;/b&gt;構造になっている。" data-en="&lt;b&gt;Proposal:&lt;/b&gt; Fund an infrastructure build. But beyond the upfront cost, it is structured so that &lt;b&gt;maintenance fees are billed to the treasury every year, indefinitely&lt;/b&gt;."><b>提案：</b>あるインフラ整備に予算を出す。ただし初期費用だけでなく、<b>運用維持費として毎年トレジャリーから継続的に請求され続ける</b>構造になっている。</p>
+        <p class="game-lead you-lead" data-ja="&lt;b&gt;あなたは20%を持つDRepです。&lt;/b&gt;まだ投票していません。賛成にも反対にも傾けることができます。これが投票力です。" data-en="&lt;b&gt;You are a DRep holding 20%.&lt;/b&gt; You have not voted yet. You can tip this either way. That is voting power."><b>あなたは20%を持つDRepです。</b>まだ投票していません。賛成にも反対にも傾けることができます。これが投票力です。</p>
 
-        <p class="vg-question">あなたの20%を、どう使いますか？</p>
+        <p class="vg-question" data-ja="あなたの20%を、どう使いますか？" data-en="How will you use your 20%?">あなたの20%を、どう使いますか？</p>
         <div class="vg-you" id="vgYou"></div>
 
         <div class="vg-status">
-          <div class="vg-score"><b id="vgYes">58.0%</b><span>賛成率（棄権を除く）</span></div>
-          <span class="tsim-verdict is-fail" id="vgVerdict">否決見込み</span>
+          <div class="vg-score"><b id="vgYes">58.0%</b><span data-ja="賛成率（棄権を除く）" data-en="Yes share (abstentions excluded)">賛成率（棄権を除く）</span></div>
+          <span class="tsim-verdict is-fail" id="vgVerdict" data-ja="否決見込み" data-en="Likely to fail">否決見込み</span>
         </div>
-        <p class="vg-insight" id="vgInsight">まだ投票していません。あなたの20%をどう使うか、上から選んでください。</p>
-        <button type="button" class="vg-reset" id="vgReset">最初からやり直す</button>
+        <p class="vg-insight" id="vgInsight" data-ja="まだ投票していません。あなたの20%をどう使うか、上から選んでください。" data-en="You have not voted yet. Choose above how to use your 20%.">まだ投票していません。あなたの20%をどう使うか、上から選んでください。</p>
+        <button type="button" class="vg-reset" id="vgReset" data-ja="最初からやり直す" data-en="Start over">最初からやり直す</button>
       </div>
     </div>
     </div>
@@ -717,7 +767,7 @@
 </section>
 
 <script>
-(function(){
+window.initMap = function(){
   var ns = 'http://www.w3.org/2000/svg';
   var yesG = document.getElementById('mapYes');
   var noG = document.getElementById('mapNo');
@@ -755,10 +805,10 @@
   }}
 
   var POS = {
-    none:    {x:330, y:200, label:'あなた（未投票）'},
-    yes:     {x:100, y:190, label:'あなた（賛成）'},
-    no:      {x:300, y:200, label:'あなた（反対）'},
-    abstain: {x:200, y:212, label:'あなた（棄権）'}
+    none:    {x:330, y:200, label:T('k000')},
+    yes:     {x:100, y:190, label:T('k001')},
+    no:      {x:300, y:200, label:T('k002')},
+    abstain: {x:200, y:212, label:T('k003')}
   };
 
   window.addEventListener('voteChange', function(e){
@@ -778,20 +828,21 @@
     you.setAttribute('class', 'map-you map-you-' + choice);
 
     if(choice === 'none'){
-      note.innerHTML = '円の大きさは投票力です。人数では反対が圧倒的でも、面積では賛成が上回っています。右の <b>02</b> であなたが投票すると、あなたの円がどちらかに移動します。';
+      note.innerHTML = T('k004');
     } else if(choice === 'abstain'){
-      note.innerHTML = 'あなたは棄権しました。円は中央に外れ、<b>母数からも除外</b>されます。残った側の割合が相対的に上がるため、棄権は中立ではありません。';
+      note.innerHTML = T('k005');
     } else if(choice === 'yes'){
-      note.innerHTML = 'あなたの円が賛成側に移りました。<b>人数では' + headN + '対' + headY + 'で反対が多数</b>ですが、面積で見ると賛成側のほうが大きくなっています。';
+      note.innerHTML = T('k006') + headN + T('k007') + headY + T('k008');
     } else {
-      note.innerHTML = 'あなたの円が反対側に移りました。反対側の面積は増えましたが、賛成側の4人はそれでも' + yesPct + '%を保っています。';
+      note.innerHTML = T('k009') + yesPct + T('k010');
     }
   });
-})();
+};
+window.initMap();
 </script>
 
 <script>
-(function(){
+window.initVote = function(){
   var THRESHOLD = 67;
   var LOCKED_YES = 58;   // 上位4人がすでに賛成
   var LOCKED_NO = 22;    // 76人が反対、しかし投票力は22%
@@ -813,12 +864,12 @@
   var powNoT = document.getElementById('vgPowNoT');
   if(!youEl) return;
 
-  [['yes','賛成に投じる'],['no','反対に投じる'],['abstain','棄権する']].forEach(function(pair){
+  [['yes',T('k011')],['no',T('k012')],['abstain',T('k013')]].forEach(function(pair){
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'vg-you-btn';
     b.dataset.val = pair[0];
-    b.innerHTML = '<span class="v">' + pair[1] + '</span><span class="p">あなたの20%</span>';
+    b.innerHTML = '<span class="v">' + pair[1] + T('k014');
     b.addEventListener('click', function(){
       choice = (choice === pair[0]) ? 'none' : pair[0];
       youEl.querySelectorAll('.vg-you-btn').forEach(function(x){
@@ -847,25 +898,25 @@
     headYes.style.width = (headY / headTotal * 100) + '%';
     headNo.style.width = (headN / headTotal * 100) + '%';
     headNo.style.left = (headY / headTotal * 100) + '%';
-    headYesT.textContent = '賛成 ' + headY + '人';
-    headNoT.textContent = '反対 ' + headN + '人';
-    powYesT.textContent = '賛成 ' + yes + '%';
-    powNoT.textContent = '反対 ' + no + '%';
+    headYesT.textContent = T('k015') + headY + T('k016');
+    headNoT.textContent = T('k017') + headN + T('k016');
+    powYesT.textContent = T('k015') + yes + '%';
+    powNoT.textContent = T('k017') + no + '%';
 
     var pass = yesShare >= THRESHOLD;
     yesEl.textContent = yesShare.toFixed(1) + '%';
     bar.classList.toggle('passed', pass);
-    verdictEl.textContent = pass ? '可決見込み' : '否決見込み';
+    verdictEl.textContent = pass ? T('k018') : T('k019');
     verdictEl.className = 'tsim-verdict ' + (pass ? 'is-pass' : 'is-fail');
 
     if(choice === 'none'){
-      insightEl.innerHTML = 'まだ投票していません。あなたの20%をどう使うか、上から選んでください。';
+      insightEl.innerHTML = T('k020');
     } else if(choice === 'no'){
-      insightEl.innerHTML = '<b>否決。</b>止められました。ただし注意してほしいのは、<b>反対に投じても、何もしなくても、賛成率は同じ' + yesShare.toFixed(1) + '%</b>だということです。委任済みで投票しなかった分は、もともと反対と同じ扱いになります。';
+      insightEl.innerHTML = T('k021') + yesShare.toFixed(1) + T('k022');
     } else if(choice === 'yes'){
-      insightEl.innerHTML = '<b>可決。</b>人数では' + headN + '人が反対しているのに、通りました。以後この維持費は毎年トレジャリーから引かれ続けます。<b>あなた1人の20%が、76人の反対より重かった</b>ということです。';
+      insightEl.innerHTML = T('k023') + headN + T('k024');
     } else {
-      insightEl.innerHTML = '<b>可決。</b>あなたは棄権しただけなのに、<b>棄権した分は母数から外れる</b>ため賛成側の割合が上がり（' + yesShare.toFixed(1) + '%）、提案が通ってしまいました。<b>棄権は中立ではありません。</b>';
+      insightEl.innerHTML = T('k025') + yesShare.toFixed(1) + T('k026');
     }
 
     window.dispatchEvent(new CustomEvent('voteChange', {detail:{
@@ -882,20 +933,21 @@
   });
 
   update();
-})();
+};
+window.initVote();
 </script>
 
 <section class="showcase">
   <div class="ghost-word drep" data-word="LOBBYING">LOBBYING</div>
   <div class="wrap">
     <div class="games-head reveal">
-      <div class="showcase-tag tag-drep"><i></i>提案者の視点</div>
-      <h2>あなたが提案者なら、誰に営業しますか。</h2>
-      <p class="sim-note"><b>これもシミュレーションです。</b>人数や割合は分かりやすさを優先して調整しています。<br>立場を変えてみます。あなたは予算を申請する側です。この提案を通せば、資金を受け取れます。限られた時間で、誰に「賛成してください」と伝えに行きますか。</p>
+      <div class="showcase-tag tag-drep"><i></i><span data-ja="提案者の視点" data-en="The proposer's view">提案者の視点</span></div>
+      <h2 data-ja="あなたが提案者なら、誰に営業しますか。" data-en="If you were the proposer, who would you pitch?">あなたが提案者なら、誰に営業しますか。</h2>
+      <p class="sim-note" data-ja="&lt;b&gt;これもシミュレーションです。&lt;/b&gt;人数や割合は分かりやすさを優先して調整しています。&lt;br&gt;立場を変えてみます。あなたは予算を申請する側です。この提案を通せば、資金を受け取れます。限られた時間で、誰に「賛成してください」と伝えに行きますか。" data-en="&lt;b&gt;Also a simulation.&lt;/b&gt; Headcounts and shares are adjusted for clarity.&lt;br&gt;Now switch sides. You are the one applying for the budget. If this proposal passes, you get the funds. With limited time, who do you go and ask to vote yes?"><b>これもシミュレーションです。</b>人数や割合は分かりやすさを優先して調整しています。<br>立場を変えてみます。あなたは予算を申請する側です。この提案を通せば、資金を受け取れます。限られた時間で、誰に「賛成してください」と伝えに行きますか。</p>
     </div>
 
     <div class="lb-cards" id="lbCards"></div>
-    <p class="lb-result" id="lbResult">上の3つから、営業先を選んでください。</p>
+    <p class="lb-result" id="lbResult" data-ja="上の3つから、営業先を選んでください。" data-en="Choose who to pitch from the three above.">上の3つから、営業先を選んでください。</p>
   </div>
 </section>
 
@@ -903,28 +955,37 @@
   <div class="ghost-word pool" data-word="POOL 委任">POOL 委任</div>
   <div class="wrap">
     <div class="games-head reveal">
-      <div class="showcase-tag tag-pool"><i></i>プール委任ゲーム</div>
-      <h2>どちらのプールに、委任しますか。</h2>
-      <p class="sim-note"><b>これもシミュレーションです。</b>架空の3つのプールで、数値は分かりやすさを優先して調整しています。実在の事業者を指すものではありません。<br>表向きの数字はどれも健全に見えますが、1つは裏で他の28プールと同じ運営者・同じ基盤に繋がっています。名前が別々でも、障害はまとめて起こりえます。</p>
-      <p>プールを選ぶと、①飽和度と②その運営者が停止したときのネットワークへの影響が表示されます。</p>
+      <div class="showcase-tag tag-pool"><i></i><span data-ja="プール委任ゲーム" data-en="Pool delegation game">プール委任ゲーム</span></div>
+      <h2 data-ja="どちらのプールに、委任しますか。" data-en="Which pool would you delegate to?">どちらのプールに、委任しますか。</h2>
+      <p class="sim-note" data-ja="&lt;b&gt;これもシミュレーションです。&lt;/b&gt;架空の3つのプールで、数値は分かりやすさを優先して調整しています。実在の事業者を指すものではありません。&lt;br&gt;表向きの数字はどれも健全に見えますが、1つは裏で他の28プールと同じ運営者・同じ基盤に繋がっています。名前が別々でも、障害はまとめて起こりえます。" data-en="&lt;b&gt;Also a simulation.&lt;/b&gt; Three fictional pools; the numbers are adjusted for clarity and point to no real operator.&lt;br&gt;On the surface all three look healthy. But one is tied to 28 other pools behind the scenes &amp;#8212; same operator, same infrastructure. Different names do not prevent a shared outage."><b>これもシミュレーションです。</b>架空の3つのプールで、数値は分かりやすさを優先して調整しています。実在の事業者を指すものではありません。<br>表向きの数字はどれも健全に見えますが、1つは裏で他の28プールと同じ運営者・同じ基盤に繋がっています。名前が別々でも、障害はまとめて起こりえます。</p>
+      <p data-ja="プールを選ぶと、①飽和度と②その運営者が停止したときのネットワークへの影響が表示されます。" data-en="Pick a pool to see (1) its saturation and (2) the network impact if that operator goes down.">プールを選ぶと、①飽和度と②その運営者が停止したときのネットワークへの影響が表示されます。</p>
     </div>
 
     <div class="pg-cards" id="pgCards"></div>
 
     <div class="pg-result reveal">
       <div class="pg-panel">
-        <div class="pg-panel-head">① 飽和度</div>
+        <div class="pg-panel-head" data-ja="① 飽和度" data-en="(1) Saturation">① 飽和度</div>
         <div class="pg-gauge"><div class="pg-gauge-fill" id="pgSatFill"></div><div class="pg-gauge-cap"></div></div>
-        <div class="pg-panel-val" id="pgSatVal">プールを選んでください</div>
+        <div class="pg-panel-val" id="pgSatVal" data-ja="プールを選んでください" data-en="Select a pool">プールを選んでください</div>
       </div>
       <div class="pg-panel">
-        <div class="pg-panel-head">② この運営者が停止したら</div>
+        <div class="pg-panel-head" data-ja="② この運営者が停止したら" data-en="(2) If this operator halts">② この運営者が停止したら</div>
         <div class="pg-riskbar"><div class="pg-riskbar-fill" id="pgRiskFill"></div></div>
-        <div class="pg-panel-val" id="pgRiskVal">プールを選んでください</div>
+        <div class="pg-panel-val" id="pgRiskVal" data-ja="プールを選んでください" data-en="Select a pool">プールを選んでください</div>
         <div class="pg-cluster" id="pgCluster"></div>
       </div>
     </div>
-    <p class="pg-verdict" id="pgVerdict">上の3つから1つ選んでください。</p>
+    <p class="pg-verdict" id="pgVerdict" data-ja="上の3つから1つ選んでください。" data-en="Pick one of the three above.">上の3つから1つ選んでください。</p>
+
+    <a class="relay-cta reveal" href="https://hfot.github.io/cardano-relay-health/" target="_blank" rel="noopener noreferrer">
+      <div class="relay-badge" data-ja="実際に測れます" data-en="This can actually be measured">実際に測れます</div>
+      <div class="relay-body">
+        <h3 data-ja="Cardano Relay Health Ranking" data-en="Cardano Relay Health Ranking">Cardano Relay Health Ranking</h3>
+        <p data-ja="このゲームで扱った「稼働しているか」「リレーが独立しているか」「同じ基盤に相乗りしていないか」は、DRepの投票内容と違って&lt;b&gt;誰が見ても同じ答えになる技術的事実&lt;/b&gt;です。だから点数にできます。&lt;br&gt;実際のCardanoのプールについて、その指標を集計して公開しているのがこのサイトです。" data-en="Unlike judging how a DRep votes, the things this game covers &#8212; is it running, are its relays independent, is it riding on shared infrastructure &#8212; are &lt;b&gt;technical facts that everyone reads the same way&lt;/b&gt;. That is why they can be scored.&#10;This site collects and publishes exactly those metrics for real Cardano pools.">このゲームで扱った「稼働しているか」「リレーが独立しているか」「同じ基盤に相乗りしていないか」は、DRepの投票内容と違って<b>誰が見ても同じ答えになる技術的事実</b>です。だから点数にできます。<br>実際のCardanoのプールについて、その指標を集計して公開しているのがこのサイトです。</p>
+        <span class="relay-link" data-ja="実際のランキングを見る" data-en="View the live ranking">実際のランキングを見る</span>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -932,50 +993,50 @@
   <div class="ghost-word" data-word="2つの委任">2つの委任</div>
   <div class="wrap">
     <div class="split-head reveal">
-      <h2>委任は2本、別々に出ています</h2>
-      <p>ひとつのウォレットから、別々の委任が2本出ています。多くの場合、意識しているのは片方だけです。どちらから進むか、選んでください。</p>
+      <h2 data-ja="委任は2本、別々に出ています" data-en="Two delegations leave your wallet separately">委任は2本、別々に出ています</h2>
+      <p data-ja="ひとつのウォレットから、別々の委任が2本出ています。多くの場合、意識しているのは片方だけです。どちらから進むか、選んでください。" data-en="Two separate delegations leave a single wallet. Most people are only aware of one. Choose where to begin.">ひとつのウォレットから、別々の委任が2本出ています。多くの場合、意識しているのは片方だけです。どちらから進むか、選んでください。</p>
     </div>
     <div class="dtree-dark-wrap reveal">
       <svg class="dtree-dark-svg"></svg>
       <div class="dtree-root-dark" id="tsr-root">
         <div class="sub">CARDANO</div>
-        <div class="label">2つの委任</div>
+        <div class="label" data-ja="2つの委任" data-en="Two delegations">2つの委任</div>
         <div class="stats"><span><i style="background:var(--pool)"></i>POOL</span><span><i style="background:var(--drep)"></i>DREP</span></div>
       </div>
       <div class="dtree-cols">
         <div class="dtree-col">
           <button type="button" class="dtree-leaf-dark pool" data-key="pool">
             <span class="icon"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="4.5" height="9" rx="1"/><rect x="8.3" y="4" width="4.5" height="13" rx="1"/><rect x="13.6" y="11" width="4.5" height="6" rx="1"/></svg></span>
-            <span class="text"><span class="title">ステーキングPOOLへの委任</span><span class="hint">チェーンそのものの安全性に効く</span></span>
+            <span class="text"><span class="title" data-ja="ステーキングPOOLへの委任" data-en="Stake pool delegation">ステーキングPOOLへの委任</span><span class="hint" data-ja="チェーンそのものの安全性に効く" data-en="Affects the security of the chain itself">チェーンそのものの安全性に効く</span></span>
           </button>
           <div class="dtree-subleaves">
-            <button type="button" class="dtree-subleaf pool" data-key="pool-effects">委任すると何が起きるか<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf pool" data-key="pool-saturation">飽和度という歯止め<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf pool" data-key="pool-security">チェーンの安全性への効き方<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf pool" data-key="pool-spovote">SPOが投票できる提案<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf pool" data-key="pool-cluster">名前は別々、運営者は同じ<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf pool" data-key="pool-choose">プールを選ぶときの観点<span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-effects"><span data-ja="委任すると何が起きるか" data-en="What delegating actually does">委任すると何が起きるか</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-saturation"><span data-ja="飽和度という歯止め" data-en="Saturation as a brake">飽和度という歯止め</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-security"><span data-ja="チェーンの安全性への効き方" data-en="How it affects chain security">チェーンの安全性への効き方</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-spovote"><span data-ja="SPOが投票できる提案" data-en="What SPOs can vote on">SPOが投票できる提案</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-cluster"><span data-ja="名前は別々、運営者は同じ" data-en="Different names, same operator">名前は別々、運営者は同じ</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf pool" data-key="pool-choose"><span data-ja="プールを選ぶときの観点" data-en="What to look for in a pool">プールを選ぶときの観点</span><span class="ar">›</span></button>
           </div>
         </div>
         <div class="dtree-col">
           <button type="button" class="dtree-leaf-dark drep" data-key="drep">
             <span class="icon"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3l6.5 3.2v3.6c0 4-2.7 6.6-6.5 8-3.8-1.4-6.5-4-6.5-8V6.2z"/><path d="M7.3 10l1.9 2 3.6-4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="text"><span class="title">DRepへの委任</span><span class="hint">チェーンの未来を決める予算に効く</span></span>
+            <span class="text"><span class="title" data-ja="DRepへの委任" data-en="DRep delegation">DRepへの委任</span><span class="hint" data-ja="チェーンの未来を決める予算に効く" data-en="Affects the budget that shapes the future">チェーンの未来を決める予算に効く</span></span>
           </button>
           <div class="dtree-subleaves">
-            <button type="button" class="dtree-subleaf drep" data-key="drep-types">投票できる提案の種類<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-bodies">投票する3つの主体<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-treasury">予算はどう決まるのか<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-nonvote">投票しなかった票の扱い<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-concentration">委任が集中するとどうなるか<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-defaults">意識せずに委任されている場合<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-judge">提案を判断する難しさ<span class="ar">›</span></button>
-            <button type="button" class="dtree-subleaf drep" data-key="drep-choose">DRepを選ぶときの観点<span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-types"><span data-ja="投票できる提案の種類" data-en="Types of proposals they vote on">投票できる提案の種類</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-bodies"><span data-ja="投票する3つの主体" data-en="The three voting bodies">投票する3つの主体</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-treasury"><span data-ja="予算はどう決まるのか" data-en="How the budget is decided">予算はどう決まるのか</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-nonvote"><span data-ja="投票しなかった票の扱い" data-en="How non-votes are counted">投票しなかった票の扱い</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-concentration"><span data-ja="委任が集中するとどうなるか" data-en="What happens when delegation concentrates">委任が集中するとどうなるか</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-defaults"><span data-ja="意識せずに委任されている場合" data-en="When you delegate without realising">意識せずに委任されている場合</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-judge"><span data-ja="提案を判断する難しさ" data-en="Why judging proposals is hard">提案を判断する難しさ</span><span class="ar">›</span></button>
+            <button type="button" class="dtree-subleaf drep" data-key="drep-choose"><span data-ja="DRepを選ぶときの観点" data-en="What to look for in a DRep">DRepを選ぶときの観点</span><span class="ar">›</span></button>
           </div>
         </div>
       </div>
       <div class="dtree-panel" id="dtreePanel">
-        <p class="dtree-panel-empty">上の項目を押すと、ここに説明が表示されます。</p>
+        <p class="dtree-panel-empty" data-ja="上の項目を押すと、ここに説明が表示されます。" data-en="Tap an item above and the explanation appears here.">上の項目を押すと、ここに説明が表示されます。</p>
       </div>
     </div>
   </div>
@@ -988,7 +1049,7 @@
   <a class="btn btn-primary" href="#top">もう一度、上から見る</a>
 </section>
 
-<footer>
+<footer data-ja="仕組みの説明はCIP-1694および Cardano Developer Portal / Cardano Docs の記述に基づいています。しきい値や必要デポジットなどはプロトコルパラメータであり、governance action によって変わることがあります。最新の値はチェーン上の値を確認してください。" data-en="Mechanics are based on CIP-1694 and the Cardano Developer Portal / Cardano Docs. Thresholds and deposit amounts are protocol parameters and can be changed by governance action &amp;#8212; check on-chain values for the latest.">
   仕組みの説明はCIP-1694および Cardano Developer Portal / Cardano Docs の記述に基づいています。
   しきい値や必要デポジットなどはプロトコルパラメータであり、governance action によって変わることがあります。
   最新の値はチェーン上の値を確認してください。
@@ -1113,20 +1174,20 @@
 </script>
 
 <script>
-(function(){
+window.initLobby = function(){
   var TARGETS = [
     {
-      id:'small', who:'小口DRep 40人', cnt:'1人あたり 約0.3%', pw:'12', unit:'% 合計',
-      result:'40人を1人ずつ説得して、ようやく合計12%。<b>時間も労力も40倍かかります。</b>それでも可決ラインには届きません。'
+      id:'small', who:T('k027'), cnt:T('k028'), pw:'12', unit:T('k029'),
+      result:T('k030')
     },
     {
-      id:'mid', who:'中堅DRep 5人', cnt:'1人あたり 約4%', pw:'20', unit:'% 合計',
-      result:'5人への営業で20%。効率は上がりましたが、まだ足りません。<b>それでも、もう1〜2人には会いに行く価値がある</b>という判断になります。'
+      id:'mid', who:T('k031'), cnt:T('k032'), pw:'20', unit:T('k029'),
+      result:T('k033')
     },
     {
-      id:'top', who:'上位DRep 2人', cnt:'1人あたり 約19%', pw:'38', unit:'% 合計',
-      result:'<b>たった2人に会うだけで38%。</b>可決ラインに一気に近づきます。時間が限られているなら、誰もがここに行きます。',
-      punch:'つまり、この構造では<b>「大口DRepに営業をかける」ことが最も合理的</b>になります。そして大口DRepの側から見れば、自分がNOを出したとき、それを覆そうとする働きかけが集中することを意味します。上位であるほど、そうしたやり取りに晒され続けます。'
+      id:'top', who:T('k034'), cnt:T('k035'), pw:'38', unit:T('k029'),
+      result:T('k036'),
+      punch:T('k037')
     }
   ];
 
@@ -1148,26 +1209,27 @@
       lbCards.appendChild(b);
     });
   }
-})();
+};
+window.initLobby();
 </script>
 
 <script>
-(function(){
+window.initPool = function(){
   var POOLS = [
     {
-      id:'a', name:'プール A', stake:'1.2%', sat:'18%', satNum:18,
-      operator:'独立（1プールのみ）', pools:1, risk:1.2,
-      verdict:'<b>もっとも分散に寄与する選択です。</b>飽和度に余裕があり、運営者も独立しています。停止しても影響はネットワーク全体の1.2%にとどまります。ただし小規模なぶん、報酬の安定性は運営体制次第です。'
+      id:'a', name:T('k038'), stake:'1.2%', sat:'18%', satNum:18,
+      operator:T('k039'), pools:1, risk:1.2,
+      verdict:T('k040')
     },
     {
-      id:'b', name:'プール B', stake:'4.8%', sat:'92%', satNum:92,
-      operator:'独立（1プールのみ）', pools:1, risk:4.8,
-      verdict:'運営者は独立していますが、<b>飽和度が92%とほぼ上限</b>です。ここに委任を足しても、超過分は報酬に反映されにくくなります。分散の観点では、まだ余裕のあるプールのほうが効果的です。'
+      id:'b', name:T('k041'), stake:'4.8%', sat:'92%', satNum:92,
+      operator:T('k039'), pools:1, risk:4.8,
+      verdict:T('k042')
     },
     {
-      id:'c', name:'プール C', stake:'4.5%', sat:'55%', satNum:55,
-      operator:'他28プールと同一運営者', pools:29, risk:22,
-      verdict:'表向きの数字（飽和度55%・シェア4.5%）だけ見ると健全ですが、<b>実際には他28プールと同じ運営者・同じ基盤</b>です。この運営者が停止すると、ネットワーク全体の22%のブロック生成が同時に止まります。名前が別々でも、分散したことにはなりません。'
+      id:'c', name:T('k043'), stake:'4.5%', sat:'55%', satNum:55,
+      operator:T('k044'), pools:29, risk:22,
+      verdict:T('k045')
     }
   ];
 
@@ -1185,9 +1247,9 @@
     b.type = 'button';
     b.className = 'pg-card';
     b.innerHTML = '<h4>' + p.name + '</h4><dl>'
-      + '<dt>ネットワークシェア</dt><dd>' + p.stake + '</dd>'
-      + '<dt>飽和度</dt><dd>' + p.sat + '</dd>'
-      + '<dt>運営体制</dt><dd>' + p.operator + '</dd>'
+      + T('k046') + p.stake + '</dd>'
+      + T('k047') + p.sat + '</dd>'
+      + T('k048') + p.operator + '</dd>'
       + '</dl>';
     b.addEventListener('click', function(){
       cardsEl.querySelectorAll('.pg-card').forEach(function(x){ x.classList.remove('is-active'); });
@@ -1201,10 +1263,10 @@
     satFill.style.width = Math.min(p.satNum, 100) + '%';
     satFill.classList.toggle('over', p.satNum > 77);
     satVal.innerHTML = '<b>' + p.sat + '</b>　'
-      + (p.satNum > 77 ? '上限が近く、これ以上の委任は報酬に反映されにくくなります。' : 'まだ余裕があります。');
+      + (p.satNum > 77 ? T('k049') : T('k050'));
 
     riskFill.style.width = p.risk + '%';
-    riskVal.innerHTML = 'ネットワーク全体の <b>' + p.risk + '%</b> のブロック生成が止まります。';
+    riskVal.innerHTML = T('k051') + p.risk + T('k052');
 
     clusterEl.innerHTML = '';
     if(p.pools > 1){
@@ -1216,168 +1278,169 @@
       clusterEl.appendChild(wrapDots);
       var note = document.createElement('div');
       note.className = 'pg-cluster-note';
-      note.textContent = p.pools + '個 — それぞれ別名のプールに見えますが、同じ運営者・同じ基盤です。';
+      note.textContent = p.pools + T('k053');
       clusterEl.appendChild(note);
     }
     verdictEl.innerHTML = p.verdict;
   }
-})();
+};
+window.initPool();
 </script>
 
 <script>
-(function(){
-  var CONTENT = {
+window.initTreePanel = function(){
+  function buildContent(){ return {
     'pool': {
-      title: 'ステーキングPOOLへの委任',
-      body: '報酬を受け取りながら、ブロックを作る顔ぶれの分布に関わります。委任先はステークプール（SPO）です。これは「チェーンを安全に動かし続けるか」の話で、DRep委任とは担当が分かれています。ADAはウォレットから動かず、いつでも委任先を変更できます。'
+      title: T('k054'),
+      body: T('k055')
     },
     'pool-effects': {
-      title: '効き方は3つあります',
+      title: T('k056'),
       list: [
-        'ステーキング報酬が発生する',
-        'そのプールがブロックを作る割当が増え、チェーンの分散のしかたが変わる',
-        'そのプール運営者（SPO）の投票力になる'
+        T('k057'),
+        T('k058'),
+        T('k059')
       ],
-      body: '3つ目のSPOの投票が扱えるのは一部の提案（ハードフォーク・憲法委員会の変更・信任否決・セキュリティ関連パラメータ）に限られ、<b>予算の使い道には投票できません</b>。'
+      body: T('k060')
     },
     'pool-saturation': {
-      title: '飽和度という歯止め',
-      body: '1つのプールに委任が集まりすぎると、それ以上は報酬に反映されなくなります。これが飽和度です。頭打ちになれば別のプールへ移る理由が生まれるため、<b>報酬と分散は意図的に結びつけられています</b>。<br><br>ただしこの上限は報酬の話に限られます。ガバナンスの投票力には、これに当たる歯止めがありません。同じ「集まりすぎ」でも効き方が違います。'
+      title: T('k061'),
+      body: T('k062')
     },
     'pool-security': {
-      title: 'チェーンの安全性への効き方',
-      body: 'ブロックを作る担当は、プールに委任されたステーク量に比例します。どこに委任するかで、ブロックを作る顔ぶれの分布そのものが変わります。',
+      title: T('k063'),
+      body: T('k064'),
       list: [
-        '少数の運営者にステークが集まるほど、実際にブロックを作っている主体の数は減る',
-        '同じ運営者が複数のプールを持つ場合、プールの数ほどには分散していない',
-        '障害や停止が起きたときの影響範囲も、そのステーク量に比例する'
+        T('k065'),
+        T('k066'),
+        T('k067')
       ]
     },
     'pool-spovote': {
-      title: 'SPOが投票できる提案',
-      body: 'SPOは、ネットワークの土台に関わる提案にだけ投票します。投票の重みは、そのプールに委任されたADA量に比例します。',
+      title: T('k068'),
+      body: T('k069'),
       list: [
-        '信任否決（憲法委員会への不信任）',
-        '憲法委員会の変更',
-        'ハードフォークの実施',
-        'セキュリティ関連のプロトコルパラメータの変更'
+        T('k070'),
+        T('k071'),
+        T('k072'),
+        T('k073')
       ],
-      note: 'トレジャリー（予算）の引き出しは、この中に入っていません。プールをどこに委任していても、予算の結果には反映されません。'
+      note: T('k074')
     },
     'pool-cluster': {
-      title: '名前は別々、運営者は同じ',
-      body: '取引所やカストディサービスは、多くの利用者のADAをまとめて預かっています。その運営者が自社のプールにまとめて委任すると、多数の利用者の資産が実質的に1つの運営体制に集中します。',
+      title: T('k075'),
+      body: T('k076'),
       list: [
-        '利用者一人ひとりは委任先を選んだつもりがなくても、預けた先の判断で委任がまとまる',
-        '同じ運営者が複数のプールを立てていても、システムや鍵の管理が共通なら障害はプールをまたいで同時に起こる',
-        'その運営体制が停止すると、積み上がった量に比例してブロック生成に影響が及ぶ'
+        T('k077'),
+        T('k078'),
+        T('k079')
       ],
-      note: '特定の事業者名は挙げません。取引所やカストディという業態そのものが、利用者の資産を一箇所にまとめやすい構造を持っている、という話です。'
+      note: T('k080')
     },
     'pool-choose': {
-      title: 'プールを選ぶときの観点',
-      body: '報酬の面と、投票力を預ける面の両方があります。どちらを重視するかで答えが変わることもあります。',
+      title: T('k081'),
+      body: T('k082'),
       list: [
-        'ブロックを安定して作れているか',
-        '飽和度に余裕があるか',
-        '運営体制の情報が公開されているか',
-        '同じ運営者が多数のプールを持っている場合、その運営者に何かあったときの影響範囲'
+        T('k083'),
+        T('k084'),
+        T('k085'),
+        T('k086')
       ]
     },
 
     'drep': {
-      title: 'DRepへの委任',
-      body: '提案に賛成か反対かを任せます。委任先はDRep。ADAは動かず、ステーキング報酬にも影響しません。これは「何を可決するか」の話で、プール委任とは担当が分かれています。<br><br>DRepは提案を実行する人ではなく、賛成・反対を出す人です。委任するという行為は、実行者を選ぶことではなく、賛否の判断を任せることになります。'
+      title: T('k087'),
+      body: T('k088')
     },
     'drep-types': {
-      title: '投票できる提案の種類',
-      body: 'DRepは、すべての種類の提案に投票できる唯一の枠です。投票の重みは、委任されたADA量に比例します。',
+      title: T('k089'),
+      body: T('k090'),
       list: [
-        'トレジャリーからの引き出し（予算の支出）',
-        'プロトコルパラメータの変更',
-        '憲法の更新',
-        'SPOと共同で投票する4種類（不信任・委員会変更・ハードフォーク・セキュリティ関連）'
+        T('k091'),
+        T('k092'),
+        T('k093'),
+        T('k094')
       ],
-      note: 'ただしDRepだけで可決できる提案はありません。どの種類も、必ず他の主体との組み合わせで決まります。'
+      note: T('k095')
     },
     'drep-bodies': {
-      title: '投票する3つの主体',
-      body: '提案の種類によって投票する顔ぶれが変わります。どの提案も3つのうち2つ以上の賛成が必要で、1つの主体だけで通ることはありません。',
+      title: T('k096'),
+      body: T('k097'),
       list: [
-        'DRep — ADA保有者から投票を委任された代表。すべての種類に投票する',
-        'SPO — プール運営者。土台に関わる4種類に投票する',
-        '憲法委員会（CC） — 提案が憲法に反していないかを見る。委員は1人1票',
-        '委員会は「良い提案か」「金額が妥当か」は判断しない。中身の良し悪しはDRepとSPOに委ねられている'
+        T('k098'),
+        T('k099'),
+        T('k100'),
+        T('k101')
       ]
     },
     'drep-treasury': {
-      title: '予算はどう決まるのか',
-      body: 'Cardanoのトレジャリーからお金を出すには、トレジャリー引き出しの提案が可決される必要があります。これに投票するのは<b>DRepと憲法委員会</b>です。SPOの票は入りません。',
-      note: '逆に言えば、予算に関わりたい場合に選ぶべきなのは委任先のDRepであって、プールではありません。'
+      title: T('k102'),
+      body: T('k103'),
+      note: T('k104')
     },
     'drep-nonvote': {
-      title: '投票しなかった票の扱い',
-      body: '「投票しない」にも複数の状態があり、結果への効き方が違います。',
+      title: T('k105'),
+      body: T('k106'),
       list: [
-        'どこにも投票委任していないステーク — 棄権と同じ扱い',
-        '委任済みで、その委任先が投票しなかった場合 — <b>反対と同じ扱い</b>',
-        '明示的な棄権 — 集計の母数（アクティブな投票ステーク）から外れる',
-        '一定期間活動のないDRepは非アクティブとみなされ、投票力が集計から外れる（目安18エポック≒3ヶ月）'
+        T('k107'),
+        T('k108'),
+        T('k109'),
+        T('k110')
       ],
-      note: '委任したまま放置することと、どこにも委任しないことは、結果に対して別の意味を持ちます。参加しないことは中立ではありません。'
+      note: T('k111')
     },
     'drep-concentration': {
-      title: '委任が集中するとどうなるか',
-      body: '投票力は委任された量にそのまま比例し、この量には上限がありません。報酬には飽和度という頭打ちがありますが、投票力にはそれに当たるものがありません。',
+      title: T('k112'),
+      body: T('k113'),
       list: [
-        '委任が集まるほど、その委任先の判断が結果に直結する',
-        '上位に偏るほど、少ない人数の賛否で結果が決まる',
-        '同時に、その少数が投票しなければ結果が動かなくなる'
+        T('k114'),
+        T('k115'),
+        T('k116')
       ],
-      note: '集中は「通りやすくなる」方向だけでなく、「何も通らなくなる」方向にも働きます。大きな委任先が動かないとき、小さな委任先が集まっても届かない状況が起こりえます。'
+      note: T('k117')
     },
     'drep-defaults': {
-      title: '意識せずに委任されている場合',
-      body: 'ウォレットやサービスによっては、既定の委任先が設定されていたり、案内に沿って進むと特定の先に委任される作りになっています。この場合、利用者が選んだというより、そのサービスを使った結果として委任が集まります。',
+      title: T('k118'),
+      body: T('k119'),
       list: [
-        '自分の委任先がどこかは、ウォレットやガバナンスツールで確認できる',
-        '委任先はいつでも変更でき、変更しても報酬には影響しない',
-        '自分自身をDRepとして登録し、直接投票することもできる（デポジットが必要）'
+        T('k120'),
+        T('k121'),
+        T('k122')
       ],
-      note: 'サービス側が設定した委任先の善し悪しではなく、自分の票がどこに入っているかを把握しているかどうか、という話です。'
+      note: T('k123')
     },
     'drep-judge': {
-      title: '提案を判断する難しさ',
-      body: '賛成か反対かを決めるのは、思っているより簡単ではありません。',
+      title: T('k124'),
+      body: T('k125'),
       list: [
-        '金額の妥当性が測りにくい — 同じ内容でも適正額の基準がない',
-        '専門性が要る — 技術・法務・会計にまたがる提案がある',
-        '量がある — すべてを読み込む時間を全員が確保できるとは限らない',
-        '成果の確認が後になる — 可決した時点では実行結果がわからない'
+        T('k126'),
+        T('k127'),
+        T('k128'),
+        T('k129')
       ],
-      note: 'この難しさがあるからこそ投票を委任する仕組みがあり、同時に、委任先を選ぶこと自体にも同じ難しさが移ります。'
+      note: T('k130')
     },
     'drep-choose': {
-      title: 'DRepを選ぶときの観点',
-      body: 'DRepの投票は記録として残ります。人柄や知識だけでなく、その判断が実際にどう機能したかを見る必要があります。',
+      title: T('k131'),
+      body: T('k132'),
       list: [
-        'どの提案にどう投票したかを確認できるか',
-        '賛否の理由を公開しているか',
-        '継続して投票しているか（非アクティブになっていないか）',
-        '以前に表明していた方針と、実際の投票が一致しているか',
-        'Catalystから資金提供を受けた経歴があるか — トレジャリー関連で利害が生じうる',
-        'トレジャリー予算を使うプロジェクトの当事者自身がDRepを兼ねていないか'
+        T('k133'),
+        T('k134'),
+        T('k135'),
+        T('k136'),
+        T('k137'),
+        T('k138')
       ],
-      note: '委任先はいつでも変更できます。一度決めたら固定されるものではありません。'
+      note: T('k139')
     }
-  };
+  }; }
 
   var panel = document.getElementById('dtreePanel');
   var allBtns = document.querySelectorAll('.dtree-leaf-dark, .dtree-subleaf');
   allBtns.forEach(function(btn){
     btn.addEventListener('click', function(){
       var key = btn.dataset.key;
-      var c = CONTENT[key];
+      var c = buildContent()[key];
       if(!c) return;
       allBtns.forEach(function(x){ x.classList.remove('is-open'); });
       btn.classList.add('is-open');
@@ -1397,8 +1460,75 @@
       }
     });
   });
-})();
+};
+window.initTreePanel();
 </script>
 
+
+<script>
+(function(){
+  function applyLang(lang){
+    window.LANG = lang;
+    try { localStorage.setItem('lang', lang); } catch(e){}
+    document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'ja');
+    document.title = (lang === 'en')
+      ? 'One Wallet, Two Kinds of Power'
+      : '1つのウォレット、2種類の委任';
+
+    // data-ja / data-en を持つ要素を差し替え
+    document.querySelectorAll('[data-ja]').forEach(function(el){
+      var v = el.getAttribute('data-' + lang);
+      if(v == null) v = el.getAttribute('data-ja');
+      el.innerHTML = v;
+    });
+
+    // ボタンの見た目
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.classList.toggle('is-active', b.dataset.lang === lang);
+    });
+
+    // JS描画部を作り直す
+    if(typeof window.rerenderAll === 'function') window.rerenderAll();
+    if(typeof window.drawDarkTree === 'function'){
+      requestAnimationFrame(function(){ requestAnimationFrame(window.drawDarkTree); });
+    }
+  }
+  window.applyLang = applyLang;
+
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.dataset.lang); });
+  });
+
+  // 初期言語（保存値があれば復元）
+  if(window.LANG && window.LANG !== 'ja'){
+    window.addEventListener('load', function(){ applyLang(window.LANG); });
+  }
+})();
+</script>
+<script>
+window.rerenderAll = function(){
+  // ゲーム内のDOMを一旦クリアしてから再初期化
+  var ids = ['mapYes','mapNo','mapAbstain','vgYou','lbCards','pgCards'];
+  ids.forEach(function(id){ var e = document.getElementById(id); if(e) e.innerHTML = ''; });
+  var sm = document.getElementById('bubSmallGroup'); if(sm) sm.innerHTML = '';
+  var lbr = document.getElementById('lbResult');
+  if(lbr && lbr.hasAttribute('data-ja')) lbr.innerHTML = lbr.getAttribute('data-' + window.LANG) || lbr.getAttribute('data-ja');
+  var pgv = document.getElementById('pgVerdict');
+  if(pgv && pgv.hasAttribute('data-ja')) pgv.innerHTML = pgv.getAttribute('data-' + window.LANG) || pgv.getAttribute('data-ja');
+  ['pgSatVal','pgRiskVal'].forEach(function(id){
+    var e = document.getElementById(id);
+    if(e && e.hasAttribute('data-ja')) e.innerHTML = e.getAttribute('data-' + window.LANG) || e.getAttribute('data-ja');
+  });
+  var pgc = document.getElementById('pgCluster'); if(pgc) pgc.innerHTML = '';
+  var satf = document.getElementById('pgSatFill'); if(satf) satf.style.width = '0';
+  var rskf = document.getElementById('pgRiskFill'); if(rskf) rskf.style.width = '0';
+
+  if(window.initMap) window.initMap();
+  if(window.initVote) window.initVote();
+  if(window.initLobby) window.initLobby();
+  if(window.initPool) window.initPool();
+  if(window.initTreePanel) window.initTreePanel();
+};
+</script>
 </body>
 </html>
